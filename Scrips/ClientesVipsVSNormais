@@ -1,0 +1,42 @@
+-- REGRA DO NEGÓCIO
+-- Cliente Normal: nota até 3;
+-- Cliente Vip: nota acima de 3;
+
+CREATE OR REPLACE VIEW CLIENTES_VIP AS
+SELECT CL.* 
+FROM CLIENTE CL
+WHERE CL.NOTA > 3;
+
+CREATE OR REPLACE VIEW CLIENTES_NORMAIS AS
+SELECT CL.* 
+FROM CLIENTE CL
+WHERE CL.NOTA <= 3;
+
+SELECT 'VIP' AS "CATEGORIA DO CLIENTE", 
+		CLV.nome_empresarial AS "NOME EMPRESARIAL",
+		CLV.cnpj AS "CNPJ",
+		CLV.nota AS "NOTA",
+		CLV.telefone AS "TELEFONE",
+		CLV.endereco AS "ENDEREÇO",
+		CLV.complemento AS "COMPLEMENTO",
+		CLV.bairro AS "BAIRRO",
+		CLV.cidade AS "CIDADE",
+		CLV.estado AS "ESTADO",
+		CLV.cep AS "CEP"
+FROM CLIENTES_VIP CLV
+WHERE situacao='ATIVO'
+UNION ALL
+SELECT 'Normal' AS "CATEGORIA DO CLIENTE",
+		CLN.nome_empresarial AS "NOME EMPRESARIAL",
+		CLN.cnpj AS "CNPJ",
+		CLN.nota AS "NOTA",
+		CLN.telefone AS "TELEFONE",
+		CLN.endereco AS "ENDEREÇO",
+		CLN.complemento AS "COMPLEMENTO",
+		CLN.bairro AS "BAIRRO",
+		CLN.cidade AS "CIDADE",
+		CLN.estado AS "ESTADO",
+		CLN.cep AS "CEP"
+FROM CLIENTES_NORMAIS CLN
+WHERE situacao='ATIVO'
+ORDER BY "NOTA" DESC, "NOME EMPRESARIAL" ASC;
